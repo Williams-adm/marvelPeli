@@ -1,23 +1,34 @@
 <?php
+// curl nos permite hacer diversas peticiones HTTP, como GET, POST, PUT, DELETE, etc.
 
-const API_URL = 'https://whenisthenextmcufilm.com/api';
+declare(strict_types=1); // Definimos el modo estricto, para que las variables sean del tipo definido, y van arriba del todo
 
-function apiUrl():array
+function renderTemplate(string $template, array $data = [])
 {
-    //Inicializando una sesión cURL; ch= cURL handle
-    $ch = curl_init(API_URL);
-    
-    //Indicar que deseamos recibir el resultado de la petición como text y no mostrarlo en pantalla
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-    //Guardamos el resultado de la petición en una variable
-    $result = curl_exec($ch);
+    extract($data); // Extraemos los names del array asociativo y los convierte en variables
+
+    require "templates/$template.php";
+}
+
+/* function apiUrl(string $apiUrl): array
+{
+    //File_get_contents nos permite hacer una petición GET, solo eso
+    $result = file_get_contents($apiUrl);
     
     // Decodificamos el JSON recibido, y lo convertimos a un array asociativo
     $data = json_decode($result, true);
-    
-    // Cerramos la sesión cURL
-    curl_close($ch);
 
     return $data;
 }
+
+function getUntilMessage(int $days): string
+{
+    // Ponemos true, para evaluar la expresión y devolver el primer valor que sea verdadero
+    return match (true){
+        $days === 0 => "¡Hoy se estrena!",
+        $days === 1 => "¡Mañana se estrena!",
+        $days <= 7 => "Esta semana se estrena",
+        $days <= 30 => "Este mes se estrena",
+        default => "Quedan $days días para su estreno"
+    };
+} */
